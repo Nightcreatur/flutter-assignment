@@ -2,10 +2,7 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:online_store/providers/auth.dart';
 import 'package:online_store/screens/product_screen.dart';
-
-import 'package:online_store/widget/textfield.dart';
 
 import '../helper/dialog.dart';
 
@@ -17,10 +14,6 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  // final GlobalKey<FormState> _formKey = GlobalKey();
-  // final _passwordController = TextEditingController();
-  // final _emailController = TextEditingController();
-
   bool _isAnimated = false;
 
   _handleGoogleButton() {
@@ -28,7 +21,7 @@ class _LoginScreenState extends State<LoginScreen> {
     _signInWithGoogle().then((user) async {
       Navigator.pop(context);
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (_) => ProductScreen()));
+          context, MaterialPageRoute(builder: (_) => const ProductScreen()));
       if (user != null) {
         Navigator.pushReplacement(
           context,
