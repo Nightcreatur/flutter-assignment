@@ -46,7 +46,7 @@ class ProductDetail extends StatelessWidget {
                       fontSize: 20,
                     ),
                   ),
-                  Text(loadedProduct.price.toString(),
+                  Text("Rs ${loadedProduct.price.toString()}",
                       style: const TextStyle(
                           fontSize: 20,
                           color: Colors.orange,

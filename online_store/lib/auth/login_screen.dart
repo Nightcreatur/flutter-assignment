@@ -1,8 +1,8 @@
 import 'dart:io';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:online_store/providers/auth.dart';
 import 'package:online_store/screens/product_screen.dart';
 
 import 'package:online_store/widget/textfield.dart';
@@ -17,19 +17,24 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final GlobalKey<FormState> _formKey = GlobalKey();
-  final _passwordController = TextEditingController();
-  final _emailController = TextEditingController();
+  // final GlobalKey<FormState> _formKey = GlobalKey();
+  // final _passwordController = TextEditingController();
+  // final _emailController = TextEditingController();
 
   bool _isAnimated = false;
-  bool _isLoading = false;
 
   _handleGoogleButton() {
-    _signInWithGoogle().then((user) {
+    Dialogs.showProgressBar(context);
+    _signInWithGoogle().then((user) async {
+      Navigator.pop(context);
       Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const ProductScreen()),
-      );
+          context, MaterialPageRoute(builder: (_) => ProductScreen()));
+      if (user != null) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const ProductScreen()),
+        );
+      }
     });
   }
 
@@ -81,12 +86,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 top: _isAnimated ? mq.height * .15 : -mq.height * .5,
                 width: mq.width * .4,
                 left: mq.width * .3,
+                bottom: mq.height * .5,
                 child: Image.asset('assets/images/shopping-online.png')),
             AnimatedPositioned(
               duration: const Duration(seconds: 2),
               top: mq.height * .4,
               width: mq.width * .5,
               left: mq.width * .25,
+              bottom: mq.height * .4,
               child: AnimatedOpacity(
                 duration: const Duration(milliseconds: 1500),
                 opacity: _isAnimated ? 1 : 0,
@@ -96,36 +103,36 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
             ),
-            Positioned(
-              bottom: mq.height * .30,
-              width: mq.width * .9,
-              left: mq.width * .05,
-              child: Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      TextFieldInput(
-                          controller: _emailController,
-                          hint: 'Email',
-                          label: 'Email',
-                          textType: TextInputType.text,
-                          isPass: false),
-                      const SizedBox(
-                        height: 10,
-                      ),
+            // Positioned(
+            //   bottom: mq.height * .30,
+            //   width: mq.width * .9,
+            //   left: mq.width * .05,
+            //   child: Form(
+            //       key: _formKey,
+            //       child: Column(
+            //         children: [
+            //           TextFieldInput(
+            //               controller: _emailController,
+            //               hint: 'Email',
+            //               label: 'Email',
+            //               textType: TextInputType.text,
+            //               isPass: false),
+            //           const SizedBox(
+            //             height: 10,
+            //           ),
 
-                      TextFieldInput(
-                          controller: _passwordController,
-                          hint: 'Password',
-                          label: 'Password',
-                          textType: TextInputType.text,
-                          isPass: true),
+            //           TextFieldInput(
+            //               controller: _passwordController,
+            //               hint: 'Password',
+            //               label: 'Password',
+            //               textType: TextInputType.text,
+            //               isPass: true),
 
-                      // ElevatedButton(
-                      //     onPressed: () {}, child: const Text('SignUP'))
-                    ],
-                  )),
-            ),
+            //           // ElevatedButton(
+            //           //     onPressed: () {}, child: const Text('SignUP'))
+            //         ],
+            //       )),
+            // ),
             Positioned(
                 bottom: mq.height * .15,
                 width: mq.width * .5,

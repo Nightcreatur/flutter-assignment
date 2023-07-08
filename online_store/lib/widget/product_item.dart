@@ -37,10 +37,14 @@ class ProductItem extends StatelessWidget {
         );
       },
       child: Card(
-        elevation: .2,
+        elevation: .5,
         child: Column(
           children: [
-            Image.network(imageUrl),
+            Image.network(
+              imageUrl,
+              height: 100,
+              fit: BoxFit.fitHeight,
+            ),
             Text(title),
             Text(
               'Rs. ${price.toStringAsFixed(2)}',

@@ -7,14 +7,9 @@ import 'package:online_store/widget/side_drawer.dart';
 import 'package:provider/provider.dart';
 import '../widget/products_grid.dart';
 
-class ProductScreen extends StatefulWidget {
+class ProductScreen extends StatelessWidget {
   const ProductScreen({super.key});
 
-  @override
-  State<ProductScreen> createState() => _ProductScreenState();
-}
-
-class _ProductScreenState extends State<ProductScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
