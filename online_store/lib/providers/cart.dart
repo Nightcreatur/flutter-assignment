@@ -42,7 +42,7 @@ class Cart with ChangeNotifier {
           productId,
           (value) => CartItem(
               id: value.id,
-              title: value.id,
+              title: value.title,
               quantity: value.quantity + 1,
               price: value.price));
     } else {
@@ -59,6 +59,11 @@ class Cart with ChangeNotifier {
 
   void removeProduct(String productId) {
     _products!.remove(productId);
+    notifyListeners();
+  }
+
+  void clearItem() {
+    _products = {};
     notifyListeners();
   }
 }

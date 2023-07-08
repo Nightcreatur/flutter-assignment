@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:online_store/providers/cart.dart';
+import 'package:online_store/providers/order.dart';
+import 'package:online_store/screens/orders_screen.dart';
 import 'package:online_store/widget/colors.dart';
 import 'package:provider/provider.dart';
 
@@ -11,6 +13,7 @@ class CartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cartCount = Provider.of<Cart>(context);
+    final order = Provider.of<Orders>(context, listen: false);
     return Scaffold(
       appBar: AppBar(actions: [
         Center(child: Text('My cart (${cartCount.itemCount.toString()})'))
@@ -36,7 +39,22 @@ class CartScreen extends StatelessWidget {
                           fontWeight: FontWeight.bold))
                 ])),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    if (cartCount.totalPrice == 0) {
+                      return;
+                    }
+
+                    order.addOrder(
+                      cartCount.products.values.toList(),
+                      cartCount.totalPrice,
+                    );
+
+                    cartCount.clearItem();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => const OrderScreen()),
+                    );
+                  },
                   style: ElevatedButton.styleFrom(
                       backgroundColor: darkP, foregroundColor: secondaryColor),
                   child: Text('Check Out (${cartCount.itemCount.toString()})'),

@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:online_store/auth/login_screen.dart';
 import 'package:online_store/widget/bottom_bar.dart';
-import '../providers/product.dart';
 import 'package:online_store/providers/products_provider.dart';
 import 'package:provider/provider.dart';
-import '../providers/cart.dart';
 
 class ProductDetail extends StatelessWidget {
   const ProductDetail({
@@ -27,7 +24,7 @@ class ProductDetail extends StatelessWidget {
       body: SafeArea(
         bottom: false,
         child: Column(children: [
-          Container(
+          SizedBox(
             width: double.infinity,
             height: mq.height * .41,
             child: Image.network(

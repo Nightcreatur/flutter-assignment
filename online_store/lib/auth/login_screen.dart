@@ -1,8 +1,4 @@
-import 'dart:developer';
-import 'dart:io';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:online_store/screens/product_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -17,7 +13,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(milliseconds: 500), () {
+    Future.delayed(const Duration(milliseconds: 500), () {
       setState(() {
         _isAnimated = true;
       });
@@ -60,7 +56,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     onPressed: () {
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (_) => ProductScreen()),
+                        MaterialPageRoute(
+                            builder: (_) => const ProductScreen()),
                       );
                     },
                     icon: Image.asset(
@@ -80,21 +77,5 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
-  }
-}
-
-class Dialogs {
-  static void showSnackBar(BuildContext context, String msg) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(msg),
-      ),
-    );
-  }
-
-  static void showProgressBar(BuildContext context) {
-    showDialog(
-        context: context,
-        builder: (_) => Center(child: const CircularProgressIndicator()));
   }
 }

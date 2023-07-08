@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:online_store/providers/cart.dart';
+import 'package:online_store/providers/order.dart';
 import 'package:online_store/providers/products_provider.dart';
 import 'package:online_store/screens/splash_screen.dart';
 import 'package:online_store/screens/product_detail_screen.dart';
-import 'package:online_store/screens/product_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -23,6 +23,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => Cart(),
         ),
+        ChangeNotifierProvider(create: (context) => Orders())
       ],
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
@@ -34,7 +35,7 @@ class MyApp extends StatelessWidget {
           ),
           home: const SplashScreen(),
           routes: {
-            ProductDetail.routeName: (context) => ProductDetail(),
+            ProductDetail.routeName: (context) => const ProductDetail(),
           }),
     );
   }
