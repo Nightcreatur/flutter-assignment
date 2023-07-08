@@ -1,5 +1,13 @@
+import 'dart:io';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:online_store/screens/product_screen.dart';
+
+import 'package:online_store/widget/textfield.dart';
+
+import '../helper/dialog.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -9,7 +17,48 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final GlobalKey<FormState> _formKey = GlobalKey();
+  final _passwordController = TextEditingController();
+  final _emailController = TextEditingController();
+
   bool _isAnimated = false;
+  bool _isLoading = false;
+
+  _handleGoogleButton() {
+    _signInWithGoogle().then((user) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const ProductScreen()),
+      );
+    });
+  }
+
+  Future<UserCredential?> _signInWithGoogle() async {
+    try {
+      await InternetAddress.lookup('google.com');
+      // Trigger the authentication flow
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+      // Obtain the auth details from the request
+      final GoogleSignInAuthentication? googleAuth =
+          await googleUser?.authentication;
+
+      // Create a new credential
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth?.accessToken,
+        idToken: googleAuth?.idToken,
+      );
+    } catch (e) {
+      Dialogs.showSnackBar(
+        context: context,
+        msg: 'Something went wrong,check internet',
+      );
+    }
+    return null;
+
+    // Once signed in, return the UserCredential
+  }
+
   @override
   void initState() {
     super.initState();
@@ -48,17 +97,43 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
             Positioned(
+              bottom: mq.height * .30,
+              width: mq.width * .9,
+              left: mq.width * .05,
+              child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      TextFieldInput(
+                          controller: _emailController,
+                          hint: 'Email',
+                          label: 'Email',
+                          textType: TextInputType.text,
+                          isPass: false),
+                      const SizedBox(
+                        height: 10,
+                      ),
+
+                      TextFieldInput(
+                          controller: _passwordController,
+                          hint: 'Password',
+                          label: 'Password',
+                          textType: TextInputType.text,
+                          isPass: true),
+
+                      // ElevatedButton(
+                      //     onPressed: () {}, child: const Text('SignUP'))
+                    ],
+                  )),
+            ),
+            Positioned(
                 bottom: mq.height * .15,
                 width: mq.width * .5,
                 height: mq.width * .09,
                 left: mq.width * .25,
                 child: ElevatedButton.icon(
                     onPressed: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (_) => const ProductScreen()),
-                      );
+                      _handleGoogleButton();
                     },
                     icon: Image.asset(
                       'assets/images/google.png',
